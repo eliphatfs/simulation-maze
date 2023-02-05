@@ -99,7 +99,7 @@ int step(std::vector<particle_t>& particles, std::vector<bar_t>& bars, float t, 
     auto reference = particles[0].pos;
     for (auto& p : particles)
     {
-        p.pos += p.vel * dt -reference;
+        p.pos += p.vel * dt - reference;
     }
 
     for (auto& p : particles)
