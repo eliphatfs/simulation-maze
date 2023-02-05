@@ -20,9 +20,12 @@ using namespace std::complex_literals;
 typedef std::complex<float> vec2;
 typedef std::complex<int> int2;
 
-const float timestep = 1.0f;
-const int n_iters = 1;
-const bool rand_force = true;
+const float timestep = 0.01f;
+const int n_iters = 100;
+const bool rand_force = false;
+
+const int timeout = 1;
+const bool dont_stop = false;
 
 struct particle_t
 {
@@ -264,7 +267,7 @@ int main()
             p.force = vec2(sample(2) - 1, sample(2) - 1);
     particles.front().force = 10.0f / (n + m) * vec2(-m, -n);
     particles.back().force = 10.0f / (n + m) * vec2(m, n);
-    while (clock() - begin < CLOCKS_PER_SEC * 19 / 20)
+    while (clock() - begin < CLOCKS_PER_SEC * 19 / 20 * timeout)
     {
         auto lim = length_limit(particles, bars);
 #if MAZE_VISUAL
@@ -276,7 +279,7 @@ int main()
 #endif
         t += timestep;
         auto res = step(particles, bars, t, timestep);
-        if (res < 0) { std::cout << "No" << std::endl; return 0; }
+        if (res < 0) { std::cout << "No" << std::endl; if constexpr (!dont_stop) return 0; }
     }
     std::cout << "Yes" << std::endl;
 #if MAZE_VISUAL
